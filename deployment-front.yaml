@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdss-front-deployment
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: pdss-front
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: pdss-front
+    spec:
+      containers:
+      - name: pdss-front
+        image: pdssacr.azurecr.io/pdss-front:v2
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 200m
+            memory: "100Mi"
+          requests:
+            cpu: 100m
+            memory: "50Mi"

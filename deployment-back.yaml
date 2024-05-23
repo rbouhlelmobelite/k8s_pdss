@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pdss-back-deployment
+  namespace: app
+spec:
+  selector:
+    matchLabels:
+      app: pdss-back
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: pdss-back
+    spec:
+      containers:
+      - name: pdss-back
+        image: pdssacr.azurecr.io/pdss-back:v2
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            cpu: 300m
+            memory: "100Mi"
+          requests:
+            cpu: 100m
+            memory: "50Mi"
+        env:
+          - name: ConnectionStrings__ProductsContext
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-connection-configmap
+                key: db-connection-string
+        #     secretKeyRef:
+        #       name: mssql-secret
+        #       key: db-connection-string-secret
